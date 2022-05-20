@@ -76,7 +76,7 @@ class CarsService
     {
         if ($car['Key']['Type'] == 'vehicles') {
             try {
-                Car::upsert($data, ['external_id']);
+                Car::upsert($data, ['external_id', 'number']);
                 $response['errorCode'] = 1;
                 $response['errorText'] = '';
             } catch (Exception $e) {
