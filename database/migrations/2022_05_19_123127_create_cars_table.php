@@ -23,11 +23,11 @@ class CreateCarsTable extends Migration
             $table->decimal('load_capacity', 12, 2);
             $table->integer('holding_capacity');
             $table->string('glonass', 255);
-            $table->json('pts');
-            $table->json('sts');
+            $table->json('pts')->nullable();
+            $table->json('sts')->nullable();
             $table->json('lease');
             $table->unsignedBigInteger('created_by');
-            $table->smallInteger('type')->default(1)->nullable(false);
+            $table->smallInteger('type')->default(1)->nullable();
             $table->unsignedBigInteger('company_id');
             $table->integer('status')->default(1)->nullable(false);
             $table->integer('updated_by');
@@ -43,9 +43,9 @@ class CreateCarsTable extends Migration
             $table->integer('fines_monitoring_id');
             $table->smallInteger('owner_confirmation_status');
             $table->smallInteger('platform_type');
-            $table->unsignedBigInteger('owner_id');
-            $table->string('owner_inn', 255);
-            $table->smallInteger('owner_entity_type');
+            $table->unsignedBigInteger('owner_id')->nullable();
+            $table->string('owner_inn', 255)->nullable();
+            $table->smallInteger('owner_entity_type')->nullable();
 
             $table
                 ->foreign('created_by')

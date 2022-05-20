@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Car;
+use App\Models\Company;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
@@ -10,7 +11,7 @@ class CarsService
 {
     public function getCarType($car)
     {
-        $carType = 0;
+        $carType = null;
 
         if ($car['Vehicle_type']['ExternalID'] == '0f61a8a4-9c6e-11ea-9699-00505695dcc5') {
             $carType = 1;
@@ -23,6 +24,7 @@ class CarsService
     public function prepareData($car)
     {
         $carType = $this->getCarType($car);
+        $company = Company::where('id', 1)->get()->first();
         $data = [
             'number' => $car['Number'],
             'mark' => $car['Model']['ExternalID'],
@@ -32,8 +34,8 @@ class CarsService
             'load_capacity' => $car['Load_capacity'],
             'holding_capacity' => 0,
             'glonass' => '',
-            'pts' => json_encode(['json' => $car['Current_documents'][0]['Key']['Type']]),
-            'sts' => json_encode(['json' => $car['Current_documents'][0]['Key']['Type']]),
+            'pts' => null,
+            'sts' => null,
             'lease' => '{}',
             'created_by' => 1,
             'type' => $carType,
@@ -47,11 +49,11 @@ class CarsService
             'tracking_number' => '',
             'sts_number' => $car['Current_documents'][0]['Key']['ExternalID'],
             'fines_monitoring_id' => 0,
-            'owner_confirmation_status' => 0,
+            'owner_confirmation_status' => 4,
             'platform_type' => 0,
-            'owner_id' => 1,
-            'owner_inn' => '',
-            'owner_entity_type' => 1,
+            'owner_id' => $company->id ?? null,
+            'owner_inn' => $company->inn ?? null,
+            'owner_entity_type' => $company->entity_type ?? null,
         ];
 
         return $data;
